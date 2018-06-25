@@ -125,8 +125,8 @@ class DFe
             $cStat = $node->getElementsByTagName('cStat')->item(0)->nodeValue;
             $xMotivo = $node->getElementsByTagName('xMotivo')->item(0)->nodeValue;
             $dhResp = $node->getElementsByTagName('dhResp')->item(0)->nodeValue;
-            $ultNSU = $node->getElementsByTagName('ultNSU')->item(0)->nodeValue;
-            $maxNSU = $node->getElementsByTagName('maxNSU')->item(0)->nodeValue;
+            $this->ultNSU = $node->getElementsByTagName('ultNSU')->item(0)->nodeValue;
+            $this->maxNSU = $node->getElementsByTagName('maxNSU')->item(0)->nodeValue;
             $lote = $node->getElementsByTagName('loteDistDFeInt')->item(0);
             if (empty($lote)) {
                 continue;
@@ -145,7 +145,7 @@ class DFe
                 $nsuproc++;
             }
             sleep(2);
-            $this->putNSU($ultNSU, $maxNSU);
+            $this->putNSU($this->ultNSU, $this->maxNSU);
         }
     }
     

@@ -27,7 +27,7 @@ $ini = date('Y-m-d H:i:s');
 
 $dfe = new DFe();
 //50 é numero máximo de interações em uma única pesquisa
-$dfe->getNFe(50);
+$dfe->getNFe(100);
 $fim = date('Y-m-d H:i:s');
 $filename = '/var/www/newnfe/cron/dfelog.log';
 $conteudo = "DFe $ini --> $fim\n";
