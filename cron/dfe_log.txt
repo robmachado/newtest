@@ -1,0 +1,66 @@
+[25-Jun-2018 11:23:12 America/Sao_Paulo] PHP Warning:  file_put_contents(/var/www/nfe/producao/eventos/201806/35180558716523000119550000000500411714308597-610554-reseve.xml): failed to open stream: Permission denied in /var/www/newnfe/app/DFe.php on line 177
+[25-Jun-2018 11:23:12 America/Sao_Paulo] PHP Stack trace:
+[25-Jun-2018 11:23:12 America/Sao_Paulo] PHP   1. {main}() /var/www/newnfe/cron/distdfe.php:0
+[25-Jun-2018 11:23:12 America/Sao_Paulo] PHP   2. App\DFe->getNFe($limit = *uninitialized*, $bIncludeAnomes = *uninitialized*) /var/www/newnfe/cron/distdfe.php:34
+[25-Jun-2018 11:23:12 America/Sao_Paulo] PHP   3. App\DFe->presEve($std = *uninitialized*, $content = *uninitialized*) /var/www/newnfe/app/DFe.php:144
+[25-Jun-2018 11:23:12 America/Sao_Paulo] PHP   4. file_put_contents(*uninitialized*, *uninitialized*) /var/www/newnfe/app/DFe.php:177
+[25-Jun-2018 11:23:16 America/Sao_Paulo] PHP Warning:  file_put_contents(/var/www/nfe/producao/eventos/201806/35180558716523000119550000000501751736066271-610554-reseve.xml): failed to open stream: Permission denied in /var/www/newnfe/app/DFe.php on line 177
+[25-Jun-2018 11:23:16 America/Sao_Paulo] PHP Stack trace:
+[25-Jun-2018 11:23:16 America/Sao_Paulo] PHP   1. {main}() /var/www/newnfe/cron/distdfe.php:0
+[25-Jun-2018 11:23:16 America/Sao_Paulo] PHP   2. App\DFe->getNFe($limit = *uninitialized*, $bIncludeAnomes = *uninitialized*) /var/www/newnfe/cron/distdfe.php:34
+[25-Jun-2018 11:23:16 America/Sao_Paulo] PHP   3. App\DFe->presEve($std = *uninitialized*, $content = *uninitialized*) /var/www/newnfe/app/DFe.php:144
+[25-Jun-2018 11:23:16 America/Sao_Paulo] PHP   4. file_put_contents(*uninitialized*, *uninitialized*) /var/www/newnfe/app/DFe.php:177
+[25-Jun-2018 11:23:20 America/Sao_Paulo] PHP Warning:  file_put_contents(/var/www/nfe/producao/eventos/201806/35180558716523000119550000000501481673831254-610554-reseve.xml): failed to open stream: Permission denied in /var/www/newnfe/app/DFe.php on line 177
+[25-Jun-2018 11:23:20 America/Sao_Paulo] PHP Stack trace:
+[25-Jun-2018 11:23:20 America/Sao_Paulo] PHP   1. {main}() /var/www/newnfe/cron/distdfe.php:0
+[25-Jun-2018 11:23:20 America/Sao_Paulo] PHP   2. App\DFe->getNFe($limit = *uninitialized*, $bIncludeAnomes = *uninitialized*) /var/www/newnfe/cron/distdfe.php:34
+[25-Jun-2018 11:23:20 America/Sao_Paulo] PHP   3. App\DFe->presEve($std = *uninitialized*, $content = *uninitialized*) /var/www/newnfe/app/DFe.php:144
+[25-Jun-2018 11:23:20 America/Sao_Paulo] PHP   4. file_put_contents(*uninitialized*, *uninitialized*) /var/www/newnfe/app/DFe.php:177
+[25-Jun-2018 11:23:26 America/Sao_Paulo] PHP Warning:  file_put_contents(/var/www/nfe/producao/eventos/201806/35180558716523000119550000000502511514852355-610554-reseve.xml): failed to open stream: Permission denied in /var/www/newnfe/app/DFe.php on line 177
+[25-Jun-2018 11:23:26 America/Sao_Paulo] PHP Stack trace:
+[25-Jun-2018 11:23:26 America/Sao_Paulo] PHP   1. {main}() /var/www/newnfe/cron/distdfe.php:0
+[25-Jun-2018 11:23:26 America/Sao_Paulo] PHP   2. App\DFe->getNFe($limit = *uninitialized*, $bIncludeAnomes = *uninitialized*) /var/www/newnfe/cron/distdfe.php:34
+[25-Jun-2018 11:23:26 America/Sao_Paulo] PHP   3. App\DFe->presEve($std = *uninitialized*, $content = *uninitialized*) /var/www/newnfe/app/DFe.php:144
+[25-Jun-2018 11:23:26 America/Sao_Paulo] PHP   4. file_put_contents(*uninitialized*, *uninitialized*) /var/www/newnfe/app/DFe.php:177
+[25-Jun-2018 11:23:37 America/Sao_Paulo] PHP Warning:  file_put_contents(/var/www/nfe/producao/eventos/201806/35180658716523000119550000000502731540011215-610554-reseve.xml): failed to open stream: Permission denied in /var/www/newnfe/app/DFe.php on line 177
+[25-Jun-2018 11:23:37 America/Sao_Paulo] PHP Stack trace:
+[25-Jun-2018 11:23:37 America/Sao_Paulo] PHP   1. {main}() /var/www/newnfe/cron/distdfe.php:0
+[25-Jun-2018 11:23:37 America/Sao_Paulo] PHP   2. App\DFe->getNFe($limit = *uninitialized*, $bIncludeAnomes = *uninitialized*) /var/www/newnfe/cron/distdfe.php:34
+[25-Jun-2018 11:23:37 America/Sao_Paulo] PHP   3. App\DFe->presEve($std = *uninitialized*, $content = *uninitialized*) /var/www/newnfe/app/DFe.php:144
+[25-Jun-2018 11:23:37 America/Sao_Paulo] PHP   4. file_put_contents(*uninitialized*, *uninitialized*) /var/www/newnfe/app/DFe.php:177
+[25-Jun-2018 11:23:41 America/Sao_Paulo] PHP Warning:  file_put_contents(/var/www/nfe/producao/eventos/201806/35180558716523000119550000000500401143824680-610554-reseve.xml): failed to open stream: Permission denied in /var/www/newnfe/app/DFe.php on line 177
+[25-Jun-2018 11:23:41 America/Sao_Paulo] PHP Stack trace:
+[25-Jun-2018 11:23:41 America/Sao_Paulo] PHP   1. {main}() /var/www/newnfe/cron/distdfe.php:0
+[25-Jun-2018 11:23:41 America/Sao_Paulo] PHP   2. App\DFe->getNFe($limit = *uninitialized*, $bIncludeAnomes = *uninitialized*) /var/www/newnfe/cron/distdfe.php:34
+[25-Jun-2018 11:23:41 America/Sao_Paulo] PHP   3. App\DFe->presEve($std = *uninitialized*, $content = *uninitialized*) /var/www/newnfe/app/DFe.php:144
+[25-Jun-2018 11:23:41 America/Sao_Paulo] PHP   4. file_put_contents(*uninitialized*, *uninitialized*) /var/www/newnfe/app/DFe.php:177
+[25-Jun-2018 11:24:05 America/Sao_Paulo] PHP Warning:  file_put_contents(/var/www/nfe/producao/eventos/201806/35180558716523000119550000000501481673831254-610554-reseve.xml): failed to open stream: Permission denied in /var/www/newnfe/app/DFe.php on line 177
+[25-Jun-2018 11:24:05 America/Sao_Paulo] PHP Stack trace:
+[25-Jun-2018 11:24:05 America/Sao_Paulo] PHP   1. {main}() /var/www/newnfe/cron/distdfe.php:0
+[25-Jun-2018 11:24:05 America/Sao_Paulo] PHP   2. App\DFe->getNFe($limit = *uninitialized*, $bIncludeAnomes = *uninitialized*) /var/www/newnfe/cron/distdfe.php:34
+[25-Jun-2018 11:24:05 America/Sao_Paulo] PHP   3. App\DFe->presEve($std = *uninitialized*, $content = *uninitialized*) /var/www/newnfe/app/DFe.php:144
+[25-Jun-2018 11:24:05 America/Sao_Paulo] PHP   4. file_put_contents(*uninitialized*, *uninitialized*) /var/www/newnfe/app/DFe.php:177
+[25-Jun-2018 11:24:09 America/Sao_Paulo] PHP Warning:  file_put_contents(/var/www/nfe/producao/eventos/201806/35180558716523000119550000000502511514852355-610554-reseve.xml): failed to open stream: Permission denied in /var/www/newnfe/app/DFe.php on line 177
+[25-Jun-2018 11:24:09 America/Sao_Paulo] PHP Stack trace:
+[25-Jun-2018 11:24:09 America/Sao_Paulo] PHP   1. {main}() /var/www/newnfe/cron/distdfe.php:0
+[25-Jun-2018 11:24:09 America/Sao_Paulo] PHP   2. App\DFe->getNFe($limit = *uninitialized*, $bIncludeAnomes = *uninitialized*) /var/www/newnfe/cron/distdfe.php:34
+[25-Jun-2018 11:24:09 America/Sao_Paulo] PHP   3. App\DFe->presEve($std = *uninitialized*, $content = *uninitialized*) /var/www/newnfe/app/DFe.php:144
+[25-Jun-2018 11:24:09 America/Sao_Paulo] PHP   4. file_put_contents(*uninitialized*, *uninitialized*) /var/www/newnfe/app/DFe.php:177
+[25-Jun-2018 11:24:13 America/Sao_Paulo] PHP Warning:  file_put_contents(/var/www/nfe/producao/eventos/201806/35180658716523000119550000000502731540011215-610554-reseve.xml): failed to open stream: Permission denied in /var/www/newnfe/app/DFe.php on line 177
+[25-Jun-2018 11:24:13 America/Sao_Paulo] PHP Stack trace:
+[25-Jun-2018 11:24:13 America/Sao_Paulo] PHP   1. {main}() /var/www/newnfe/cron/distdfe.php:0
+[25-Jun-2018 11:24:13 America/Sao_Paulo] PHP   2. App\DFe->getNFe($limit = *uninitialized*, $bIncludeAnomes = *uninitialized*) /var/www/newnfe/cron/distdfe.php:34
+[25-Jun-2018 11:24:13 America/Sao_Paulo] PHP   3. App\DFe->presEve($std = *uninitialized*, $content = *uninitialized*) /var/www/newnfe/app/DFe.php:144
+[25-Jun-2018 11:24:13 America/Sao_Paulo] PHP   4. file_put_contents(*uninitialized*, *uninitialized*) /var/www/newnfe/app/DFe.php:177
+[25-Jun-2018 11:24:23 America/Sao_Paulo] PHP Warning:  file_put_contents(/var/www/nfe/producao/eventos/201806/35180558716523000119550000000500401143824680-610554-reseve.xml): failed to open stream: Permission denied in /var/www/newnfe/app/DFe.php on line 177
+[25-Jun-2018 11:24:23 America/Sao_Paulo] PHP Stack trace:
+[25-Jun-2018 11:24:23 America/Sao_Paulo] PHP   1. {main}() /var/www/newnfe/cron/distdfe.php:0
+[25-Jun-2018 11:24:23 America/Sao_Paulo] PHP   2. App\DFe->getNFe($limit = *uninitialized*, $bIncludeAnomes = *uninitialized*) /var/www/newnfe/cron/distdfe.php:34
+[25-Jun-2018 11:24:23 America/Sao_Paulo] PHP   3. App\DFe->presEve($std = *uninitialized*, $content = *uninitialized*) /var/www/newnfe/app/DFe.php:144
+[25-Jun-2018 11:24:23 America/Sao_Paulo] PHP   4. file_put_contents(*uninitialized*, *uninitialized*) /var/www/newnfe/app/DFe.php:177
+[25-Jun-2018 11:24:42 America/Sao_Paulo] PHP Warning:  file_put_contents(/var/www/nfe/producao/eventos/201806/35180558716523000119550000000501751736066271-610554-reseve.xml): failed to open stream: Permission denied in /var/www/newnfe/app/DFe.php on line 177
+[25-Jun-2018 11:24:42 America/Sao_Paulo] PHP Stack trace:
+[25-Jun-2018 11:24:42 America/Sao_Paulo] PHP   1. {main}() /var/www/newnfe/cron/distdfe.php:0
+[25-Jun-2018 11:24:42 America/Sao_Paulo] PHP   2. App\DFe->getNFe($limit = *uninitialized*, $bIncludeAnomes = *uninitialized*) /var/www/newnfe/cron/distdfe.php:34
+[25-Jun-2018 11:24:42 America/Sao_Paulo] PHP   3. App\DFe->presEve($std = *uninitialized*, $content = *uninitialized*) /var/www/newnfe/app/DFe.php:144
+[25-Jun-2018 11:24:42 America/Sao_Paulo] PHP   4. file_put_contents(*uninitialized*, *uninitialized*) /var/www/newnfe/app/DFe.php:177
