@@ -5,7 +5,6 @@ include_once '../bootstrap.php';
 
 /**
  * Rotina de envio do emails com a NFe
- * 
  * Esta rotina recebe como parâmetro :
  * 
  * chave --> chave da NFe

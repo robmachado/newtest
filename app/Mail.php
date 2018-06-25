@@ -63,9 +63,9 @@ class Mail
             }
             
             $this->mail->loadDocuments($xml, $pdf);
-    
+            
             //envia emails
-            $resp = $this->mail->send($aPara);
+            $resp = $this->mail->send($aPara, false);
     
         } catch (\InvalidArgumentException $e) {
             echo "Falha: " . $e->getMessage();
