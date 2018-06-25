@@ -6,6 +6,8 @@ nbproject
 *.pdf
 *.json
 composer.lock
+.env
+local/
 vendor
 /.DS_Store
 /.idea
