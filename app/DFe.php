@@ -37,9 +37,9 @@ class DFe
         $config = file_get_contents('../config/config.json');
         $this->tools = new Tools($config, $certificate);
         $this->tools->model('55');
-        $this->pathNFe = realpath(APP_ROOT.'/../nfe/producao/recebidas');
-        $this->pathEvt = realpath(APP_ROOT.'/../nfe/producao/eventos');
-        $this->pathRes = $this->pathNFe.'/resumo';
+        $this->pathNFe = $_ENV['NFEFOLDER'];
+        $this->pathEvt = $_ENV['EVENTFOLDER'];
+        $this->pathRec = $_ENV['RECEIVEDFOLDER'];
         $this->nsu = APP_ROOT.'/base/nsu.json';
         $this->getNSU();
         $this->st = new Standardize();
@@ -59,7 +59,7 @@ class DFe
         if (! is_file($this->nsu)) {
             $aNSU = array('ultNSU' => 0, 'maxNSU' => 0);
             $nsuJson = json_encode($aNSU);
-            file_put_contents($file, $nsuJson);
+            file_put_contents($this->nsu, $nsuJson);
         }
         $nsuJson = json_decode(file_get_contents($this->nsu));
         $this->ultNSU = (int) $nsuJson->ultNSU;
@@ -93,9 +93,8 @@ class DFe
      * CNPJ do config.json e salvar as NFe retornadas na pasta recebidas/<anomes>
      * 
      * @param int $limit
-     * @param boolean $bIncludeAnomes
      */
-    public function getNFe($limit = 10, $bIncludeAnomes = false)
+    public function getNFe($limit = 10)
     {
         $nsuproc=0;
         if ($this->ultNSU == $this->maxNSU) {
@@ -194,7 +193,7 @@ class DFe
         if ($tpEvento == '110111' ) {
             //é cancelamento
             $nfam = '20' . substr($chNFe, 2, 4);
-            $file = "/var/www/nfe/recebidas/$nfam/$chNFe-nfe.xml";
+            $file = $this->pathRec . "/$nfam/$chNFe-nfe.xml";
             $this->markCancel($file);
         }
         if (! is_dir($this->pathEvt."/$anomes/")) {
@@ -210,7 +209,7 @@ class DFe
     {
         $chNFe = $std->chNFe;
         return file_put_contents(
-            $this->pathRes . "/$chNFe-resNFe.xml",
+            $this->pathRec . "/resumo/$chNFe-resNFe.xml",
             $content     
         );
     }
@@ -228,7 +227,7 @@ class DFe
             $xMotivo= $std->retEvento->infEvento->xMotivo;
             $retorno = "$chNFe [$cStat] - $xMotivo";
             if ($cStat == 135 || $cStat == 573 || $cStat == 650) {
-                $path = $this->pathRes."/$chNFe-resNFe.xml";
+                $path = $this->pathRec."/resumo/$chNFe-resNFe.xml";
                 if (is_file($path)) {
                     unlink($path);
                 }

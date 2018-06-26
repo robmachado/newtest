@@ -43,26 +43,27 @@ class Status
         
         $tstmp = 0;
         if (is_file(APP_ROOT.'/base/status.json')) {
-            $aRetorno = (array) json_decode(file_get_contents(APP_ROOT.'/base/status.json'));
-            $dt = new \DateTime($aRetorno['dhRecbto']);
+            $std = json_decode(file_get_contents(APP_ROOT.'/base/status.json'));
+            $dt = new \DateTime($std->dhRecbto);
             $tstmp = $dt->getTimestamp();
         }
         $tsnow = time();
         $dif = ($tsnow - $tstmp);
         //caso tenha passado mais de uma hora desde a ultima verificação
         if ($dif > 3600) {
-            $certificate = Certificate::readPfx(file_get_contents(APP_ROOT.'/certs/fimatec_2018.pfx'), 'fima');
+            $certificate = Certificate::readPfx(file_get_contents(APP_ROOT.'/certs/' . $_ENV['CERTIFICATE']), $_ENV['PASSWORD']);
             self::$nfe = new Tools($config, $certificate);
             self::$certTS = $certificate->getValidTo()->getTimestamp();
             $resp = self::$nfe->sefazStatus(self::$config->siglaUF, 1);
             $st = new \NFePHP\NFe\Common\Standardize();
             $json = $st->toJson($resp);
             file_put_contents(APP_ROOT.'/base/status.json', $json);
+            $std = json_decode($json);
         }
-        $dttmp = new \DateTime($aRetorno['dhRecbto']);
+        $dttmp = new \DateTime($std->dhRecbto);
         $dhora = $dttmp->format('d/m/Y');
         $htmlStatus = "<p class=\"smallred\">OFF-LINE</p>\n<p class=\"smallred\">$dhora</p>";
-        if ($aRetorno['cStat'] == '107') {
+        if ($std->cStat == '107') {
             $htmlStatus = "<p class=\"smallgreen\">SEFAZ On-Line</p>\n<p class=\"smallgreen\">$dhora</p>";
         }
         return $htmlStatus;
@@ -77,7 +78,7 @@ class Status
     public static function getExpirDate()
     {
         if (empty(self::$nfe) && ! empty(self::$config)) {
-            $certificate = Certificate::readPfx(file_get_contents(APP_ROOT . '/certs/fimatec_2018.pfx'), 'fima');
+            $certificate = Certificate::readPfx(file_get_contents(APP_ROOT . '/certs/' . $_ENV['CERTIFICATE']), $_ENV['PASSWORD']);
             self::$certTS = $certificate->getValidTo()->getTimestamp();
         }
         $data = date('d/m/Y', self::$certTS);

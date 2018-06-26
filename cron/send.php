@@ -19,10 +19,9 @@ use App\Mail;
 //);
 //$dbh = $db->connect();
 
-$dir = "/var/www/nfe/producao/enviadas/*.xml";
+$dir = realpath($_ENV['NFEFOLDER']."/../") . "/*.xml";
 $listas = glob($dir);
 foreach ($listas as $file) {
-    echo $file . ' --> ';
     $xml = file_get_contents($file);
     $dom = new Dom();
     $dom->load($file);
@@ -89,7 +88,7 @@ foreach ($listas as $file) {
             $i++;
         }
     }
-    $addresses[] = 'vendas@fimatec.com.br';
+    $addresses[] = $_ENV['MAILREPLY'];
     $resp = 'automatico';
     if (isset($nfeProc)) {
         $nfe_nProt = !empty($nfeProc->getElementsByTagName("nProt")->item(0)->nodeValue) ? $nfeProc->getElementsByTagName("nProt")->item(0)->nodeValue : '';
@@ -196,7 +195,7 @@ foreach ($listas as $file) {
         $sqlComm .= "WHERE nfe_id ='" . $nfe_nNF . "';";
     }
     //$num = $db->execSQL($dbh, $sqlComm);
-    $dirdest = realpath(APP_ROOT . "/../nfe/producao/enviadas/aprovadas") . "/$anomes";
+    $dirdest = $_ENV['NFEFOLDER'] . "/$anomes";
     if (!is_dir($dirdest)) {
         mkdir($dirdest, 0777);
     }

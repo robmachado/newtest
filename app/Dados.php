@@ -14,6 +14,7 @@ namespace App;
  */
 
 use NFePHP\Common\DOMImproved as Dom;
+use NFePHP\NFe\Common\Standardize;
 
 class Dados
 {
@@ -106,7 +107,8 @@ class Dados
     
     public static function extrai($aList, $cnpj = '')
     {
-        $aResp = array();
+        $st = new Standardize();
+        $totIcms = 0;
         $totFat = 0;
         $totPeso = 0;
         $totIcms = 0;
@@ -115,129 +117,117 @@ class Dados
         $totPesoServ = 0;
         $totFatServ = 0;
         foreach ($aList as $file) {
-            $dom = null;
-            $ide = null;
-            $emit = null;
-            $dest = null;
-            try {
-                $dom = new Dom();
-                $dom->load($file);
-                $ide = $dom->getNode('ide');
-                $emit = $dom->getNode('emit');
-                $dest = $dom->getNode('dest');
-                $enderDest = $dom->getNode('enderDest');
-                $fat = $dom->getNode('fat');
-                $icmsTot = $dom->getNode('ICMSTot');
-                $vol = $dom->getNode('vol');
-                $cStat = $dom->getNodeValue('cStat');
-                if ($cStat != '100') {
-                    self::$nCanc++;
-                }
-                $dhEmi = $dom->getValue($ide, 'dhEmi');
-                if (empty($dhEmi)) {
-                    $dhEmi = $dom->getValue($ide, 'dEmi');
-                }
-                $dt = new \DateTime($dhEmi);
-                $tsEmi = $dt->getTimestamp();
-                $data = '';
-                if (is_numeric($tsEmi)) {
-                    $data = date('d/m/Y', $tsEmi);
-                }
-                $emitCNPJ = $dom->getValue($emit, 'CNPJ');
-                $emitRazao = $dom->getValue($emit, 'xNome');
-                $destRazao = $dom->getValue($dest, 'xNome');
-                $destUF = $dom->getValue($enderDest, 'UF');
-                $vNF = $dom->getValue($icmsTot, 'vNF');
-                $vNFtext = $vNF;
-                if (is_numeric($vNF)) {
-                    $vNFtext = 'R$ '.number_format($vNF, '2', ',', '.');
-                }
-                $serie = $dom->getNodeValue('serie');
-                $nProt = $dom->getNodeValue('nProt');
-                $nome = $emitRazao;
-                if ($emitCNPJ == $cnpj) {
-                    $nome = $destRazao;
-                }
-                $email = $dom->getValue($dest, 'email');
-                $aObscont = $dom->getElementsByTagName('obsCont');
-                if (count($aObscont) > 0) {
-                    foreach ($aObscont as $obsCont) {
-                        $xCampo = $obsCont->getAttribute('xCampo');
-                        if ($xCampo == 'email') {
-                            $email .= ";" . $dom->getValue($obsCont, 'xTexto');
-                        }
-                    }
-                }
-                if (substr($email, 0, 1) == ';') {
-                    $email = substr($email, 1, strlen($email)-1);
-                }
-                $vICMS = $dom->getValue($icmsTot, 'vICMS');
-                $totIcms += $vICMS;
-                $valorFat = 0;
-                $pesoLProd = 0;
-                $pesoLServ = 0;
-                $nO = substr($dom->getValue($ide, 'natOp'), 0, 1);    
-                if ($cStat == '100' || $cStat == '150') {
-                    $valorFat = 0;
-                    if (!is_string($fat)) {
-                        $valorFat = (float) $dom->getValue($fat, 'vLiq');
-                    }
-                    if ($nO === 'V') {
-                        if ($valorFat > 0) {
-                            if (substr($destRazao, 0, 6) !== 'TATICA' ) {
-                                $pesoLProd = $dom->getValue($vol, 'pesoL');
-                                $totFatProd += $valorFat;
-                            } else {
-                                $valorFat = 0;
-                            }
-                        }        
-                    } elseif ($nO === 'R') {
-                        if ($valorFat > 0) {
-                            $pesoLServ = $dom->getValue($vol, 'pesoL');
-                            if (is_numeric($valorFat)) {
-                                $totFatServ += $valorFat;
-                            }    
-                        }
-                    }
-                    
-                }
-                $totPesoProd += $pesoLProd;
-                $totPesoServ += $pesoLServ;
-                $pesoL = $pesoLProd + $pesoLServ;
-                $aResp[] = array(
-                    'nNF' => $dom->getValue($ide, 'nNF'),
-                    'serie' => $serie,
-                    'data' =>  $data,
-                    'nome' => $nome,
-                    'natureza' => $dom->getValue($ide, 'natOp'),
-                    'cStat' => $cStat,
-                    'vNF' => $vNFtext,
-                    'nProt' => $nProt,
-                    'valorFat' => ($valorFat == 0) ? '' : $valorFat,
-                    'peso' => ($pesoL == 0) ? '' : $pesoL,
-                    'email' => $email,
-                    'uf' => $destUF,
-                    'icms' => $vICMS
-                );
-            } catch (RuntimeException $e) {
-                $aResp[] = array(
-                    'nNF' => '000000',
-                    'serie' => '000',
-                    'data' =>  '000',
-                    'nome' => 'FALHA',
-                    'natureza' => "$file",
-                    'cStat' => '',
-                    'vNF' => 0,
-                    'nProt' => '',
-                    'valorFat' => '',
-                    'email' => '',
-                    'uf' => '',
-                    'icms' => 0
-                );
+            $xml = file_get_contents($file);
+            $std = $st->toStd($xml);
+            $dhEmi = !empty($std->NFe->infNFe->ide->dhEmi)
+                ? $std->NFe->infNFe->ide->dhEmi
+                : $std->NFe->infNFe->ide->dEmi;
+            $dt = new \DateTime($dhEmi);
+            $tsEmi = $dt->getTimestamp();
+            $data = $dt->format('d/m/Y');
+            $cStat = !empty($std->protNFe->infProt->cStat)
+                ? $std->protNFe->infProt->cStat
+                : '';
+            
+            if ($cStat == '101' || $cStat == '135' || $cStat == '155') {
+                self::$nCanc++;
             }
-        }
+            
+            $emitCNPJ = (string) $std->NFe->infNFe->emit->CNPJ;
+            $emitRazao = (string) $std->NFe->infNFe->emit->xNome;
+            $destRazao = (string) $std->NFe->infNFe->dest->xNome;
+            $destUF = (string) $std->NFe->infNFe->dest->enderDest->UF;
+            $vNF = (float) $std->NFe->infNFe->total->ICMSTot->vNF;
+            $vNFtext = $vNF;
+            if (is_numeric($vNF)) {
+                $vNFtext = 'R$ '.number_format($vNF, '2', ',', '.');
+            }
+            $nNF = (string) $std->NFe->infNFe->ide->nNF;
+            $natOp = (string) $std->NFe->infNFe->ide->natOp;
+            $serie = (string) $std->NFe->infNFe->ide->serie;
+            $nProt = (string) $std->protNFe->infProt->nProt;
+            
+            $nome = $emitRazao;
+            if ($emitCNPJ == $cnpj) {
+                $nome = $destRazao;
+            }
+            $email = !empty($std->NFe->infNFe->dest->email) 
+                ? $std->NFe->infNFe->dest->email
+                : '';
+            $aObscont = !empty($std->NFe->infNFe->obsCont)
+                ? $std->NFe->infNFe->obsCont
+                : [];
+            foreach ($aObscont as $obsCont) {
+                $xCampo = $obsCont->attributes->xCampo;
+                if ($xCampo === 'email') {
+                    $email .= ";" . $obsCont->xTexto;
+                }
+            }
+            if (substr($email, 0, 1) == ';') {
+               $email = substr($email, 1, strlen($email)-1);
+            }
+            $vICMS = (float) $std->NFe->infNFe->total->ICMSTot->vICMS;
+            
+            $valorFat = 0;
+            $pesoLProd = 0;
+            $pesoLServ = 0;
+            $nO = substr($std->NFe->infNFe->ide->natOp, 0, 1);
+            if ($cStat == '100' || $cStat == '150') {
+                $cobr = !empty($std->NFe->infNFe->cobr)
+                    ? $std->NFe->infNFe->cobr
+                    : null;
+                if (!empty($cobr)) {
+                    $fat = !empty($cobr->fat)
+                        ? $cobr->fat
+                        : null;
+                    $dups = !empty($cobr->dup)
+                        ? $cobr->dup
+                        : [];
+                    if (!empty($fat)) {
+                        $valorFat = !empty($fat->vFat) ? $fat->vFat : 0; 
+                    }
+                    if (is_array($dups)) {
+                        if ($valorFat == 0 && count($dups) > 0) {
+                            foreach($dups as $dup) {
+                                $valorFat += !empty($dup->vDup) ? $dup->vDup : 0;
+                            }
+                        }
+                    } else {
+                        if ($valorFat == 0 && !empty($dups)) {
+                            $valorFat += !empty($dups->vDup) ? $dups->vDup : 0;
+                        }
+                    }    
+                }
+                $pesoL = !empty($std->NFe->infNFe->transp->vol->pesoL)
+                    ? $std->NFe->infNFe->transp->vol->pesoL
+                    : 0;
+            }
+            $totFatProd += $valorFat;
+            $totIcms += $vICMS;
+            $totFat += $valorFat;
+            $totPeso += $pesoL;
+            $totFatProd += $valorFat;
+            $totPesoProd += $pesoLProd;
+            $totPesoServ = 0;
+            $totFatServ = 0;
+            $aResp[] = [
+                'nNF' => $nNF,
+                'serie' => $serie,
+                'data' =>  $data,
+                'nome' => $nome,
+                'natureza' => $natOp,
+                'cStat' => $cStat,
+                'vNF' => $vNFtext,
+                'nProt' => $nProt,
+                'valorFat' => ($valorFat == 0) ? '' : $valorFat,
+                'peso' => ($pesoL == 0) ? '' : $pesoL,
+                'email' => $email,
+                'uf' => $destUF,
+                'icms' => $vICMS
+            ];
+        }            
         return array(
-            'totFat' => $totFatProd + $totFatServ,
+            'totFat' => $totFatProd,
             'totFatProd' => $totFatProd,
             'totFatServ' => $totFatServ,
             'totPesoProd' => $totPesoProd,

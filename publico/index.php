@@ -111,7 +111,7 @@ if (!empty($pasta) && !empty($ano) && !empty($mes)) {
     $aList = array();
     $mensagem = '';
     $titulo .= " $mes/$ano";
-    $path = '/var/www/nfe'.DIRECTORY_SEPARATOR.$ambiente.DIRECTORY_SEPARATOR.$caminho;
+    $path = realpath($_ENV['NFEFOLDER'].'/../../').'/'.$caminho;
     try {
         $aList = glob($path.'/*.xml');
     } catch (InvalidArgumentException $exc) {
@@ -147,8 +147,16 @@ $totFatServ = number_format($aDados['totFatServ'], '2', ',', '.');
 $totIcms = number_format($aDados['totIcms'], '2', ',', '.');
 $totPesoProd = number_format($aDados['totPesoProd'], '2', ',', '.');
 $totPesoServ = number_format($aDados['totPesoServ'], '2', ',', '.');
-$pmedProd = number_format($aDados['totFatProd']/$aDados['totPesoProd'], '2', ',', '.');
-$pmedServ = number_format($aDados['totFatServ']/$aDados['totPesoServ'], '2', ',', '.');
+if ($aDados['totPesoProd'] > 0) {
+    $pmedProd = number_format($aDados['totFatProd']/$aDados['totPesoProd'], '2', ',', '.');
+} else {
+    $pmedProd = '0';
+}    
+if ($aDados['totPesoServ'] > 0) {
+    $pmedServ = number_format($aDados['totFatServ']/$aDados['totPesoServ'], '2', ',', '.');
+} else {
+    $pmedServ = 0;
+}    
 
 $fatMedio = round($aDados['totFat']/$dias);
 $fatMedioTxt = number_format($fatMedio, '2', ',', '.');
@@ -201,8 +209,14 @@ if (count($aDados['aNF']) > 0) {
 
 $strICMSSP = number_format($totICMSSP, 2, ',', '.'); 
 $strICMSOutros = number_format($totICMSOutros, 2, ',', '.');
-$strRazaoICMS = number_format(($totFatOutros/($totFatOutros+$totFatSP))*100, 2, ',', '.');  
-$strICMSpagar = number_format($totICMSOutros, 2, ',', '.') . " - totalICMScredito x " . number_format($totFatOutros/($totFatOutros+$totFatSP), 3, ',', '.'); 
+if (($totFatOutros+$totFatSP) > 0) {
+    $strRazaoICMS = number_format(($totFatOutros/($totFatOutros+$totFatSP))*100, 2, ',', '.');      
+    $strICMSpagar = number_format($totICMSOutros, 2, ',', '.') . " - totalICMScredito x " . number_format($totFatOutros/($totFatOutros+$totFatSP), 3, ',', '.'); 
+} else {
+    $strRazaoICMS  = '';
+    $strICMSpagar = '';
+}
+
 $html = "<!DOCTYPE html>
 <html>
     <head>

@@ -3,17 +3,13 @@ ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 ini_set('error_log', dirname(__FILE__) . '/error_log.txt');
 error_reporting(E_ALL);
-include_once '/var/www/newnfe/bootstrap.php';
-
-if (!defined('APP_ROOT')) {
-    define('APP_ROOT', '/var/www/newnfe');
-}
+include_once __DIR__ . '/../bootstrap.php';
 
 use NFePHP\NFe\Complements;
 
-$pathCanc = '/var/www/nfe/producao/canceladas';
-$pathNFe = '/var/www/nfe/producao/enviadas/aprovadas';
-$pathCCe = '/var/www/nfe/producao/cartacorrecao';
+$pathCanc = $_ENV['CANCELFOLDER'];
+$pathNFe = $_ENV['NFEFOLDER'];
+$pathCCe = $_ENV['CCEFOLDER'];
 
 //procura por nota no diretorio das canceladas
 $aNfe = glob($pathCanc ."/*.xml");

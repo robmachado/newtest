@@ -1,0 +1,30 @@
+{
+    "name": "robmachado/teste",
+    "version":"2.0.0-dev",
+    "type": "project",
+    "description": "Lista NFe",
+    "license": [
+        "LGPL-3.0+"
+    ],
+    "authors": [
+        {
+            "name": "Roberto L. Machado",
+            "email": "linux.rlm@gmail.com.br",
+            "homepage": "http://www.nfephp.org",
+            "role": "Developer"    
+        }    
+    ],
+    "require": {
+        "php": ">=7.0",
+        "nfephp-org/sped-nfe": "dev-master",
+        "nfephp-org/sped-mail": "dev-master",
+        "nfephp-org/sped-da": "dev-master",
+        "vlucas/phpdotenv": "^2.5@dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "minimum-stability": "dev"
+}
