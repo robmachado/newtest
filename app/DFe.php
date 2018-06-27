@@ -101,7 +101,7 @@ class DFe
             $this->maxNSU++;
         }
         if ($limit > 100 || $limit == 0) {
-            $limit = 10;
+            $limit = 50;
         }
         $iCount = 0;
         while ($this->ultNSU < $this->maxNSU) {
