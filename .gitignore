@@ -4,7 +4,13 @@ nbproject
 *.pem
 *.cer
 *.pdf
+nsu.json
 config.json
+status.json
+dfe_log.txt
+error_log.txt
+send_log.txt
+dfelog.log
 composer.lock
 .env
 local/
