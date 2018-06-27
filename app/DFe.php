@@ -114,7 +114,7 @@ class DFe
                 $resp = $this->tools->sefazDistDFe($this->ultNSU);
             } catch (\Exception $e) {
                 echo $e->getMessage();
-                die;
+                break;
             }
             $dom = new \DOMDocument();
             $dom->loadXML($resp);
