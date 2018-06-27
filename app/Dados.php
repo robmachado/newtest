@@ -196,10 +196,10 @@ class Dados
                         }
                     }
                 }
-                $pesoL = !empty($std->NFe->infNFe->transp->vol->pesoL)
-                    ? $std->NFe->infNFe->transp->vol->pesoL
-                    : 0;
             }
+            $pesoL = !empty($std->NFe->infNFe->transp->vol->pesoL)
+               ? $std->NFe->infNFe->transp->vol->pesoL
+               : 0;
             if ($natOp1 == 'V') {
                 $totFatProd += $valorFat;
                 $totPesoProd += $pesoL;
