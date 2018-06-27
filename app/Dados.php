@@ -169,9 +169,7 @@ class Dados
             $vICMS = (float) $std->NFe->infNFe->total->ICMSTot->vICMS;
             
             $valorFat = 0;
-            $pesoLProd = 0;
-            $pesoLServ = 0;
-            $nO = substr($std->NFe->infNFe->ide->natOp, 0, 1);
+            $natOp1 = strtoupper(substr($std->NFe->infNFe->ide->natOp, 0, 1));
             if ($cStat == '100' || $cStat == '150') {
                 $cobr = !empty($std->NFe->infNFe->cobr)
                     ? $std->NFe->infNFe->cobr
@@ -184,9 +182,9 @@ class Dados
                         ? $cobr->dup
                         : [];
                     if (!empty($fat)) {
-                        $valorFat = !empty($fat->vFat) ? $fat->vFat : 0; 
+                        $valorFat = !empty($fat->vLiq) ? $fat->vLiq : 0; 
                     }
-                    if (is_array($dups)) {
+                    if (is_array($dups) && !empty($fat->vLiq)) {
                         if ($valorFat == 0 && count($dups) > 0) {
                             foreach($dups as $dup) {
                                 $valorFat += !empty($dup->vDup) ? $dup->vDup : 0;
@@ -196,20 +194,22 @@ class Dados
                         if ($valorFat == 0 && !empty($dups)) {
                             $valorFat += !empty($dups->vDup) ? $dups->vDup : 0;
                         }
-                    }    
+                    }
                 }
                 $pesoL = !empty($std->NFe->infNFe->transp->vol->pesoL)
                     ? $std->NFe->infNFe->transp->vol->pesoL
                     : 0;
             }
-            $totFatProd += $valorFat;
+            if ($natOp1 == 'V') {
+                $totFatProd += $valorFat;
+                $totPesoProd += $pesoL;
+            } elseif ($natOp1 == 'R' && $valorFat > 0) {
+                $totFatServ += $valorFat;
+                $totPesoServ += $pesoL;
+            }    
             $totIcms += $vICMS;
             $totFat += $valorFat;
             $totPeso += $pesoL;
-            $totFatProd += $valorFat;
-            $totPesoProd += $pesoLProd;
-            $totPesoServ = 0;
-            $totFatServ = 0;
             $aResp[] = [
                 'nNF' => $nNF,
                 'serie' => $serie,
