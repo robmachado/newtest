@@ -34,7 +34,7 @@ class DFe
     public function __construct()
     {
         $certificate = Certificate::readPfx(file_get_contents(APP_ROOT.'/certs/'.$_ENV['CERTIFICATE']), $_ENV['PASSWORD']);
-        $config = file_get_contents('../config/config.json');
+        $config = file_get_contents(APP_ROOT.'/config/config.json');
         $this->tools = new Tools($config, $certificate);
         $this->tools->model('55');
         $this->pathNFe = $_ENV['NFEFOLDER'];
