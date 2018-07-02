@@ -153,11 +153,11 @@ class DFe
         $dt = new \DateTime($std->NFe->infNFe->ide->dhEmi);
         $anomes = $dt->format('Ym');
         $chNFe = preg_replace('/[^0-9]/', '', $std->NFe->infNFe->attributes->Id);
-        if (! is_dir($this->pathNFe."/$anomes/")) {
-            mkdir($this->pathNFe."/$anomes/");
+        if (! is_dir($this->pathRec."/$anomes/")) {
+            mkdir($this->pathRec."/$anomes/");
         } 
         return file_put_contents(
-            $this->pathNFe."/$anomes/$chNFe-nfe.xml",
+            $this->pathRec."/$anomes/$chNFe-nfe.xml",
             $content
         );
     }
