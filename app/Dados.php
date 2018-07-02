@@ -117,6 +117,7 @@ class Dados
         $totPesoServ = 0;
         $totFatServ = 0;
         foreach ($aList as $file) {
+            $aResp = [];
             $xml = file_get_contents($file);
             $std = $st->toStd($xml);
             $dhEmi = !empty($std->NFe->infNFe->ide->dhEmi)
