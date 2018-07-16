@@ -116,13 +116,22 @@ class Dados
         $totPesoProd = 0;
         $totPesoServ = 0;
         $totFatServ = 0;
+        $aResp = [];
         foreach ($aList as $file) {
-            $aResp = [];
             $xml = file_get_contents($file);
             $std = $st->toStd($xml);
-            $dhEmi = !empty($std->NFe->infNFe->ide->dhEmi)
-                ? $std->NFe->infNFe->ide->dhEmi
-                : $std->NFe->infNFe->ide->dEmi;
+            if (isset($std->NFe)) {
+                $nfe = $std->NFe;
+            } else {
+                $nfe = $std;
+            }
+            if (!isset($nfe->infNFe)) {
+                unlink($file);
+                continue;
+            }
+            $dhEmi = !empty($nfe->infNFe->ide->dhEmi)
+                ? $nfe->infNFe->ide->dhEmi
+                : $nfe->infNFe->ide->dEmi;
             $dt = new \DateTime($dhEmi);
             $tsEmi = $dt->getTimestamp();
             $data = $dt->format('d/m/Y');
@@ -134,29 +143,29 @@ class Dados
                 self::$nCanc++;
             }
             
-            $emitCNPJ = (string) $std->NFe->infNFe->emit->CNPJ;
-            $emitRazao = (string) $std->NFe->infNFe->emit->xNome;
-            $destRazao = (string) $std->NFe->infNFe->dest->xNome;
-            $destUF = (string) $std->NFe->infNFe->dest->enderDest->UF;
-            $vNF = (float) $std->NFe->infNFe->total->ICMSTot->vNF;
+            $emitCNPJ = (string) $nfe->infNFe->emit->CNPJ;
+            $emitRazao = (string) $nfe->infNFe->emit->xNome;
+            $destRazao = (string) $nfe->infNFe->dest->xNome;
+            $destUF = (string) $nfe->infNFe->dest->enderDest->UF;
+            $vNF = (float) $nfe->infNFe->total->ICMSTot->vNF;
             $vNFtext = $vNF;
             if (is_numeric($vNF)) {
                 $vNFtext = 'R$ '.number_format($vNF, '2', ',', '.');
             }
-            $nNF = (string) $std->NFe->infNFe->ide->nNF;
-            $natOp = (string) $std->NFe->infNFe->ide->natOp;
-            $serie = (string) $std->NFe->infNFe->ide->serie;
-            $nProt = (string) $std->protNFe->infProt->nProt;
+            $nNF = (string) $nfe->infNFe->ide->nNF;
+            $natOp = (string) $nfe->infNFe->ide->natOp;
+            $serie = (string) $nfe->infNFe->ide->serie;
+            $nProt = (string) !empty($std->protNFe->infProt->nProt) ? $std->protNFe->infProt->nProt : '';
             
             $nome = $emitRazao;
             if ($emitCNPJ == $cnpj) {
                 $nome = $destRazao;
             }
-            $email = !empty($std->NFe->infNFe->dest->email) 
-                ? $std->NFe->infNFe->dest->email
+            $email = !empty($nfe->infNFe->dest->email) 
+                ? $nfe->infNFe->dest->email
                 : '';
             $aObscont = !empty($std->NFe->infNFe->obsCont)
-                ? $std->NFe->infNFe->obsCont
+                ? $nfe->infNFe->obsCont
                 : [];
             foreach ($aObscont as $obsCont) {
                 $xCampo = $obsCont->attributes->xCampo;
@@ -167,13 +176,13 @@ class Dados
             if (substr($email, 0, 1) == ';') {
                $email = substr($email, 1, strlen($email)-1);
             }
-            $vICMS = (float) $std->NFe->infNFe->total->ICMSTot->vICMS;
+            $vICMS = (float) $nfe->infNFe->total->ICMSTot->vICMS;
             
             $valorFat = 0;
-            $natOp1 = strtoupper(substr($std->NFe->infNFe->ide->natOp, 0, 1));
+            $natOp1 = strtoupper(substr($nfe->infNFe->ide->natOp, 0, 1));
             if ($cStat == '100' || $cStat == '150') {
-                $cobr = !empty($std->NFe->infNFe->cobr)
-                    ? $std->NFe->infNFe->cobr
+                $cobr = !empty($nfe->infNFe->cobr)
+                    ? $nfe->infNFe->cobr
                     : null;
                 if (!empty($cobr)) {
                     $fat = !empty($cobr->fat)
@@ -198,8 +207,8 @@ class Dados
                     }
                 }
             }
-            $pesoL = !empty($std->NFe->infNFe->transp->vol->pesoL)
-               ? $std->NFe->infNFe->transp->vol->pesoL
+            $pesoL = !empty($nfe->infNFe->transp->vol->pesoL)
+               ? $nfe->infNFe->transp->vol->pesoL
                : 0;
             if ($natOp1 == 'V') {
                 $totFatProd += $valorFat;
