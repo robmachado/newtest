@@ -97,13 +97,16 @@ $dias = Dates::diasUteis(date('m'), date('Y'));
 $hoje = date('d/m/Y');
 $titulo = "Notas Fiscais";
 $htmlMsgPasta = "<i>[hoje $hoje com $dias dias úteis no mês.]</i>";
+$cnpj = '';
 if (!empty($pasta) && !empty($ano) && !empty($mes)) {
     if ($pasta == 'APROVADAS') {
         $caminho = 'enviadas'.DIRECTORY_SEPARATOR.'aprovadas'.DIRECTORY_SEPARATOR.$ano.$mes;
         $chkAprovadas = 'SELECTED ';
+        $cnpj = $objConfig->cnpj;
     } elseif ($pasta == 'ENVIADAS') {
         $caminho = 'enviadas'.DIRECTORY_SEPARATOR;
         $chkEnviadas = 'SELECTED ';
+        $cnpj = $objConfig->cnpj;
     } else {
         $caminho = 'recebidas'.DIRECTORY_SEPARATOR.$ano.$mes;
         $chkRecebidas = 'SELECTED ';
@@ -117,7 +120,8 @@ if (!empty($pasta) && !empty($ano) && !empty($mes)) {
     } catch (InvalidArgumentException $exc) {
         $mensagem = $exc->getMessage();
     }
-    $aDados = Dados::extrai($aList, $objConfig->cnpj);
+   
+    $aDados = Dados::extrai($aList, $cnpj);
     $numNF = count($aDados['aNF']);
     $numCanc = Dados::$nCanc;
     $dias = Dates::diasUteis($mes, $ano);

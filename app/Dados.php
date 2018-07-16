@@ -135,15 +135,11 @@ class Dados
             $dt = new \DateTime($dhEmi);
             $tsEmi = $dt->getTimestamp();
             $data = $dt->format('d/m/Y');
-            $cStat = !empty($std->protNFe->infProt->cStat)
-                ? $std->protNFe->infProt->cStat
-                : '';
-            
-            if ($cStat == '101' || $cStat == '135' || $cStat == '155') {
-                self::$nCanc++;
-            }
-            
             $emitCNPJ = (string) $nfe->infNFe->emit->CNPJ;
+            if (!empty($cnpj) && ($emitCNPJ !== $cnpj)) {
+                unlink($file);
+                continue;
+            }
             $emitRazao = (string) $nfe->infNFe->emit->xNome;
             $destRazao = (string) $nfe->infNFe->dest->xNome;
             $destUF = (string) $nfe->infNFe->dest->enderDest->UF;
@@ -156,7 +152,15 @@ class Dados
             $natOp = (string) $nfe->infNFe->ide->natOp;
             $serie = (string) $nfe->infNFe->ide->serie;
             $nProt = (string) !empty($std->protNFe->infProt->nProt) ? $std->protNFe->infProt->nProt : '';
-            
+            $cStat = !empty($std->protNFe->infProt->cStat)
+                ? $std->protNFe->infProt->cStat
+                : '';
+            if ($cStat == '101' || $cStat == '135' || $cStat == '155') {
+                $natOp = 'CANCELADA';
+                self::$nCanc++;
+            } if ($cStat == '') {
+                $natOp = 'NÃO PROTOCOLADA!!!';
+            }
             $nome = $emitRazao;
             if ($emitCNPJ == $cnpj) {
                 $nome = $destRazao;
@@ -194,15 +198,17 @@ class Dados
                     if (!empty($fat)) {
                         $valorFat = !empty($fat->vLiq) ? $fat->vLiq : 0; 
                     }
-                    if (is_array($dups) && !empty($fat->vLiq)) {
-                        if ($valorFat == 0 && count($dups) > 0) {
-                            foreach($dups as $dup) {
-                                $valorFat += !empty($dup->vDup) ? $dup->vDup : 0;
+                    if (empty($fat->vLiq)) {
+                        if (is_array($dups)) {
+                            if ($valorFat == 0 && count($dups) > 0) {
+                                foreach($dups as $dup) {
+                                    $valorFat += !empty($dup->vDup) ? $dup->vDup : 0;
+                                }
+                            }  
+                        } else {
+                            if (!empty($dups)) {
+                                $valorFat = !empty($dups->vDup) ? $dups->vDup : 0;
                             }
-                        }
-                    } else {
-                        if ($valorFat == 0 && !empty($dups)) {
-                            $valorFat += !empty($dups->vDup) ? $dups->vDup : 0;
                         }
                     }
                 }
