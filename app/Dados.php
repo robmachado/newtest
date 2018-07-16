@@ -184,6 +184,7 @@ class Dados
             
             $valorFat = 0;
             $natOp1 = strtoupper(substr($nfe->infNFe->ide->natOp, 0, 1));
+            
             if ($cStat == '100' || $cStat == '150') {
                 $cobr = !empty($nfe->infNFe->cobr)
                     ? $nfe->infNFe->cobr
@@ -213,6 +214,9 @@ class Dados
                     }
                 }
             }
+            if ($nfe->infNFe->ide->tpNF == 0) {
+                $valorFat = 0;
+            }
             $pesoL = !empty($nfe->infNFe->transp->vol->pesoL)
                ? $nfe->infNFe->transp->vol->pesoL
                : 0;
@@ -222,7 +226,7 @@ class Dados
             } elseif ($natOp1 == 'R' && $valorFat > 0) {
                 $totFatServ += $valorFat;
                 $totPesoServ += $pesoL;
-            }    
+            }
             $totIcms += $vICMS;
             $totFat += $valorFat;
             $totPeso += $pesoL;
