@@ -1,0 +1,18 @@
+{
+    "atualizacao":"2018-06-16 06:01:21",
+    "tpAmb":1,
+    "razaosocial":"Fimatec Textil Ltda",
+    "siglaUF":"SP",
+    "cnpj":"58716523000119",
+    "schemes":"PL_009_V4",
+    "versao":"4.00",
+    "tokenIBPT":"",
+    "CSC":"",
+    "CSCid":"",
+    "aProxyConf":{
+        "proxyIp":"",
+        "proxyPort":"",
+        "proxyUser":"",
+        "proxyPass":""
+    }
+}
