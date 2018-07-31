@@ -19,7 +19,7 @@ use App\DFe;
 $lista = isset($_REQUEST['lista']) ? $_REQUEST['lista'] : '';
 $aLista = explode(',', $lista);
 
-$path = realpath(APP_ROOT.'/../nfe/producao/recebidas/resumo');
+$path = realpath($_ENV['RECEIVEDFOLDER']. '/resumo');
 $dfe = new DFe();
 $aInv = array_flip($aLista);
 $resp = [];

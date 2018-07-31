@@ -19,7 +19,7 @@ include_once '../bootstrap.php';
 
 use App\Dados;
 $aList = array();
-$path = "/var/www/nfe/producao/recebidas/resumo";
+$path = $_ENV['RECEIVEDFOLDER'] . "/resumo";
 $aList = glob($path.'/*.xml');
 $aDados = Dados::extraiResumo($aList);
 $lista = '<form>';

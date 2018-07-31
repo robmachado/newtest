@@ -15,9 +15,12 @@ class Process
 
     public function __construct()
     {
+        
         $pathcert = realpath(dirname(__FILE__) . '/../certs');
         $content = file_get_contents($pathcert . '/' . $_ENV['CERTIFICATE']);
+        
         $this->certificate = Certificate::readPfx($content, $_ENV['PASSWORD']);
+        
         $config = [
             "atualizacao" => date('Y-m-d H:i:s'),
             "tpAmb" => (int) $_ENV['NFE_TPAMB'],

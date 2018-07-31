@@ -32,7 +32,9 @@ class DFe extends Process
     
     public function __construct()
     {
-        parent::__construc();
+        parent::__construct();
+        
+
         $this->tools->model('55');
         $this->pathNFe = $_ENV['NFEFOLDER'];
         $this->pathEvt = $_ENV['EVENTFOLDER'];

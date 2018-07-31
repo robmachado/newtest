@@ -37,7 +37,7 @@ $bPdf = false;
 
 if ($comPdf === '1') {
     $bPdf = true;
-    $logo = 'images/logo.jpg';
+    $logo = !empty($_ENV['NFE_LOGO']) ? "images/".$_ENV['NFE_LOGO'] : "";
     if (strpos($xml, 'recebidas')) {
         $logo = '';
     }

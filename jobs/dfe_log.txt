@@ -1,0 +1,5 @@
+[31-Jul-2018 16:20:29 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined method App\Process::__construc() in /var/www/newtest/app/DFe.php:35
+Stack trace:
+#0 /var/www/newtest/jobs/distdfe.php(30): App\DFe->__construct()
+#1 {main}
+  thrown in /var/www/newtest/app/DFe.php on line 35

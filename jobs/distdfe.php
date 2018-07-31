@@ -26,12 +26,18 @@ if (!defined('APP_ROOT')) {
 use App\DFe;
 
 $ini = date('Y-m-d H:i:s');
-
-$dfe = new DFe();
-$dfe->getNFe(100);
+try {
+    $dfe = new DFe();
+    $dfe->getNFe(100);
+} catch (\Exception $e) {
+    echo $e->getMessage();
+}
 $fim = date('Y-m-d H:i:s');
 $filename = __DIR__ . '/dfelog.log';
 $conteudo = "DFe $ini --> $fim\n";
+if (!is_file($filename)) {
+    file_put_contents($filename, "\n");
+}
 if (is_writable($filename)) {
     if (!$handle = fopen($filename, 'a')) {
          echo "Não foi possível abrir o arquivo ($filename)";
