@@ -5,7 +5,7 @@ nbproject
 *.cer
 *.pdf
 nsu.json
-/base/config.json
+/config/config.json
 /base/status.json
 /cron/dfe_log.txt
 /cron/error_log.txt
