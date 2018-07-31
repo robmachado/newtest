@@ -5,6 +5,7 @@ nbproject
 *.cer
 *.pdf
 nsu.json
+/public/images/*.jpg
 /config/config.json
 /base/status.json
 /cron/dfe_log.txt
