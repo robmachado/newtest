@@ -18,11 +18,10 @@ use NFePHP\NFe\Tools;
 use NFePHP\NFe\Common\Standardize;
 use NFePHP\Common\DOMImproved;
 use \DOMDocument;
+use App\Process;
 
-
-class DFe
+class DFe extends Process
 {
-    public $tools;
     public $ultNSU = 0;
     public $maxNSU = 0;
     public $nsu;
@@ -33,9 +32,7 @@ class DFe
     
     public function __construct()
     {
-        $certificate = Certificate::readPfx(file_get_contents(APP_ROOT.'/certs/'.$_ENV['CERTIFICATE']), $_ENV['PASSWORD']);
-        $config = file_get_contents(APP_ROOT.'/config/config.json');
-        $this->tools = new Tools($config, $certificate);
+        parent::__construc();
         $this->tools->model('55');
         $this->pathNFe = $_ENV['NFEFOLDER'];
         $this->pathEvt = $_ENV['EVENTFOLDER'];

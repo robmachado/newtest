@@ -5,9 +5,6 @@ ini_set('error_log', dirname(__FILE__) . '/dfe_log.txt');
 error_reporting(E_ALL);
 include_once __DIR__ . '/../bootstrap.php';
 
-if (!defined('APP_ROOT')) {
-    define('APP_ROOT', dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR);
-}
 
 /**
  * Rotina de busca das NFe destinadas, para ser usada via CRON com php-cli em modo console
@@ -20,6 +17,11 @@ if (!defined('APP_ROOT')) {
  * @link       http://github.com/robmachado/teste for the canonical source repository
  *
  */
+
+
+if (!defined('APP_ROOT')) {
+    define('APP_ROOT', dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR);
+}
 
 use App\DFe;
 

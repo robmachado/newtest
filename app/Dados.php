@@ -108,6 +108,7 @@ class Dados
     public static function extrai($aList, $cnpj = '')
     {
         $st = new Standardize();
+        $tot = 0;
         $totIcms = 0;
         $totFat = 0;
         $totPeso = 0;
@@ -230,6 +231,7 @@ class Dados
             $totIcms += $vICMS;
             $totFat += $valorFat;
             $totPeso += $pesoL;
+            $tot += $vNF;
             $aResp[] = [
                 'nNF' => $nNF,
                 'serie' => $serie,
@@ -247,6 +249,7 @@ class Dados
             ];
         }            
         return array(
+            'tot' => $tot,
             'totFat' => $totFatProd,
             'totFatProd' => $totFatProd,
             'totFatServ' => $totFatServ,

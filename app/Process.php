@@ -9,22 +9,24 @@ use NFePHP\Common\Validator;
 
 class Process
 {
-    protected $tools;
-    
+    public $tools;
+    public $config;
+    public $certificate;
+
     public function __construct()
     {
         $pathcert = realpath(dirname(__FILE__) . '/../certs');
         $content = file_get_contents($pathcert . '/' . $_ENV['CERTIFICATE']);
-        $certificate = Certificate::readPfx($content, 'fima');
+        $this->certificate = Certificate::readPfx($content, $_ENV['PASSWORD']);
         $config = [
-            "atualizacao" => "2017-09-27 06:01:21",
-            "tpAmb" => $_ENV['TPAMB'],
-            "razaosocial" => $_ENV['RAZAO'],
-            "siglaUF" => $_ENV['UF'],
-            "cnpj" => $_ENV['CNPJ'],
-            "schemes" => $_ENV['SCHEMES'],
-            "versao" => $_ENV['VERSAO'],
-            "tokenIBPT" => "",
+            "atualizacao" => date('Y-m-d H:i:s'),
+            "tpAmb" => (int) $_ENV['NFE_TPAMB'],
+            "razaosocial" => $_ENV['NFE_RAZAO'],
+            "siglaUF" => $_ENV['NFE_UF'],
+            "cnpj" => $_ENV['NFE_CNPJ'],
+            "schemes" => $_ENV['NFE_SCHEMA'],
+            "versao" => $_ENV['NFE_VERSAO'],
+            "tokenIBPT" => $_ENV['NFE_IBPT'],
             "CSC" => "",
             "CSCid" => "",
             "aProxyConf" => [
@@ -34,8 +36,8 @@ class Process
                 "proxyPass" => ""
             ]
         ];
-        $json = json_encode($config);
-        $this->tools = new Tools($json, $certificate);
+        $this->config = json_encode($config);
+        $this->tools = new Tools($this->config, $this->certificate);
     }
     
     public function send($filename)

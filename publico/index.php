@@ -29,19 +29,17 @@ if (!defined('APP_ROOT')) {
     define('APP_ROOT', dirname(dirname(__FILE__)));
 }
 
-//carrega os dados de configuração
-$cfile = APP_ROOT .'/config/config.json';
-$configJson = file_get_contents($cfile);
-$objConfig = json_decode($configJson);
 //estabelece o ambiente
 $ambiente = 'homologacao';
-if ($objConfig->tpAmb == '1') {
+if ($_ENV['NFE_TPAMB'] == 1) {
     $ambiente = 'producao';
 }
-//verifica o status
-$htmlStatus = Status::verifica($configJson);
-//verifica certificado
-$htmlCert = Status::getExpirDate();
+
+//verifica o status e validade
+$htmls = Status::verifica();
+
+$htmlStatus = $htmls[0];
+$htmlCert = $htmls[1];
 //cria uma lista vazia
 
 $aList = array();
@@ -102,11 +100,11 @@ if (!empty($pasta) && !empty($ano) && !empty($mes)) {
     if ($pasta == 'APROVADAS') {
         $caminho = 'enviadas'.DIRECTORY_SEPARATOR.'aprovadas'.DIRECTORY_SEPARATOR.$ano.$mes;
         $chkAprovadas = 'SELECTED ';
-        $cnpj = $objConfig->cnpj;
+        $cnpj = $_ENV['NFE_CNPJ'];
     } elseif ($pasta == 'ENVIADAS') {
         $caminho = 'enviadas'.DIRECTORY_SEPARATOR;
         $chkEnviadas = 'SELECTED ';
-        $cnpj = $objConfig->cnpj;
+        $cnpj = $_ENV['NFE_CNPJ'];
     } else {
         $caminho = 'recebidas'.DIRECTORY_SEPARATOR.$ano.$mes;
         $chkRecebidas = 'SELECTED ';
@@ -120,7 +118,6 @@ if (!empty($pasta) && !empty($ano) && !empty($mes)) {
     } catch (InvalidArgumentException $exc) {
         $mensagem = $exc->getMessage();
     }
-   
     $aDados = Dados::extrai($aList, $cnpj);
     $numNF = count($aDados['aNF']);
     $numCanc = Dados::$nCanc;
@@ -145,6 +142,7 @@ $totFatSP = 0;
 $totFatOutros = 0;
 $totICMSSP = 0;
 $totICMSOutros = 0;
+$tot = number_format($aDados['tot'], '2', ',', '.');
 $totFat = number_format($aDados['totFat'], '2', ',', '.');
 $totFatProd = number_format($aDados['totFatProd'], '2', ',', '.');
 $totFatServ = number_format($aDados['totFatServ'], '2', ',', '.');
@@ -227,7 +225,7 @@ $html = "<!DOCTYPE html>
         <title>Notas Fiscais</title>
         <meta charset=\"UTF-8\">
         <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
-        <script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js\"></script>
+        <script src=\"js/jquery-1.9.1.min.js\"></script>
         <script src=\"resources/stupidtable.js?dev\"></script>
         <link rel=\"stylesheet\" type=\"text/css\" href=\"css/teste.css\">
     </head>
@@ -371,8 +369,8 @@ $html = "<!DOCTYPE html>
             <h2>$mensagem</h2>
             <table border=\"0\" cellspacing=\"1\" width=\"40%\">
                 <tr>
-                    <td class=\"right\">Total Faturado</td>
-                    <td class=\"right\">R$ $totFat</td>
+                    <td class=\"right\">Total</td>
+                    <td class=\"right\">R$ $tot</td>
                 </tr>
                 <tr>
                     <td class=\"right\">Total Venda Faturado</td>

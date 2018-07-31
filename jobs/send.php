@@ -8,17 +8,6 @@ include_once '../bootstrap.php';
 use NFePHP\Common\DOMImproved as Dom;
 use NFePHP\DA\NFe\Danfe;
 use App\Mail;
-//use App\DBase;
-
-//$db = new DBase(
-//    $_ENV['DBTYPE'],
-//    $_ENV['DBHOST'],
-//    $_ENV['DBPORT'],
-//    $_ENV['DBNAME'],
-//    $_ENV['DBUSER'],
-//    $_ENV['DBPASS']
-//);
-//$dbh = $db->connect();
 
 $dir = realpath($_ENV['NFEFOLDER']."/../") . "/*.xml";
 $listas = glob($dir);
@@ -135,67 +124,6 @@ foreach ($listas as $file) {
         $mail = new Mail();
         $resp = $mail->envia($xml, $addresses, true, $pdf);
     }
-    //$sqlComm = "SELECT nfe_id, nfe_nNF FROM ACO_nfe_$nfe_tpAmb WHERE nfe_nNF = '" . $nfe_nNF . "'";
-    //$aRet = $db->querySQL($dbh, $sqlComm);
-    //if (count($aRet) > 0) {
-        $flagINC = FALSE;
-    //} else {
-    //    $flagINC = TRUE;
-    //}
-    if ($flagINC) {
-        $sqlComm = "INSERT INTO ACO_nfe_$nfe_tpAmb ( nfe_id, nfe_nNF, nfe_serie, nfe_cNF, nfe_cDV, nfe_dEmi, nfe_chave, nfe_versao, nfe_cUF, nfe_tpNF, nfe_tpImp, nfe_tpEmis, nfe_finNFe, nfe_procEmi, nfe_verProc, nfe_nProt, nfe_dhRecbto, nfe_cStat, nfe_status,";
-        $sqlComm .= "nfe_mail, nfe_mail_error, resp ) VALUES ( ";
-        $sqlComm .= "'" . $nfe_nNF . "',";
-        $sqlComm .= "'" . $nfe_nNF . "',";
-        $sqlComm .= "'" . $nfe_serie . "',";
-        $sqlComm .= "'" . $nfe_cNF . "',";
-        $sqlComm .= "'" . $nfe_cDV . "',";
-        $sqlComm .= "'" . $nfe_dEmi . "',";
-        $sqlComm .= "'" . $nfe_chave . "',";
-        $sqlComm .= "'" . $nfe_versao . "',";
-        $sqlComm .= "'" . $nfe_cUF . "',";
-        $sqlComm .= "'" . $nfe_tpNF . "',";
-        $sqlComm .= "'" . $nfe_tpImp . "',";
-        $sqlComm .= "'" . $nfe_tpEmis . "',";
-        $sqlComm .= "'" . $nfe_finNFe . "',";
-        $sqlComm .= "'" . $nfe_procEmi . "',";
-        $sqlComm .= "'" . $nfe_verProc . "',";
-        $sqlComm .= "'" . $nfe_nProt . "',";
-        $sqlComm .= "'" . $nfe_dhRecbto . "',";
-        $sqlComm .= "'" . $nfe_cStat . "',";
-        $sqlComm .= "'" . $nfe_status . "',";
-        //$sqlComm .= "'" . $docXML . "',";
-        $sqlComm .= "'" . $nfe_mail . "',";
-        $sqlComm .= "'" . $nfe_mail_log . "',";
-        $sqlComm .= "'" . $resp . "')";
-    } else {
-        $sqlComm = "UPDATE ACO_nfe_$nfe_tpAmb SET ";
-        $sqlComm .= "nfe_id ='" . $nfe_nNF . "',";
-        $sqlComm .= "nfe_nNF ='" . $nfe_nNF . "',";
-        $sqlComm .= "nfe_serie ='" . $nfe_serie . "',";
-        $sqlComm .= "nfe_cNF='" . $nfe_cNF . "',";
-        $sqlComm .= "nfe_cDV='" . $nfe_cDV . "',";
-        $sqlComm .= "nfe_dEmi='" . $nfe_dEmi . "',";
-        $sqlComm .= "nfe_chave='" . $nfe_chave . "',";
-        $sqlComm .= "nfe_versao='" . $nfe_versao . "',";
-        $sqlComm .= "nfe_cUF='" . $nfe_cUF . "',";
-        $sqlComm .= "nfe_tpNF='" . $nfe_tpNF . "',";
-        $sqlComm .= "nfe_tpImp='" . $nfe_tpImp . "',";
-        $sqlComm .= "nfe_tpEmis='" . $nfe_tpEmis . "',";
-        $sqlComm .= "nfe_finNFe='" . $nfe_finNFe . "',";
-        $sqlComm .= "nfe_procEmi='" . $nfe_procEmi . "',";
-        $sqlComm .= "nfe_verProc='" . $nfe_verProc . "',";
-        $sqlComm .= "nfe_nProt='" . $nfe_nProt . "',";
-        $sqlComm .= "nfe_dhRecbto='" . $nfe_dhRecbto . "',";
-        $sqlComm .= "nfe_cStat='" . $nfe_cStat . "',";
-        $sqlComm .= "nfe_status='" . $nfe_status . "',";
-        //$sqlComm .= "nfe_xmlfile='" . $docXML . "',";
-        $sqlComm .= "nfe_mail='" . $nfe_mail . "',";
-        $sqlComm .= "nfe_mail_error='" . $nfe_mail_log . "',";
-        $sqlComm .= "resp='" . $resp . "' ";
-        $sqlComm .= "WHERE nfe_id ='" . $nfe_nNF . "';";
-    }
-    //$num = $db->execSQL($dbh, $sqlComm);
     $dirdest = $_ENV['NFEFOLDER'] . "/$anomes";
     if (!is_dir($dirdest)) {
         mkdir($dirdest, 0777);
