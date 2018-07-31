@@ -34,6 +34,7 @@ $ambiente = 'homologacao';
 if ($_ENV['NFE_TPAMB'] == 1) {
     $ambiente = 'producao';
 }
+$logo = !empty($_ENV['NFE_LOGO']) ? "images/".$_ENV['NFE_LOGO'] : "images/logo.jpg";
 
 //verifica o status e validade
 $htmls = Status::verifica();
@@ -167,6 +168,7 @@ if ($ano.$mes == date('Ym')) {
     $diasRest = $dias - Dates::diasUteisNow($mes, $ano);
     $fatProj = number_format($aDados['totFat'] + ($fatMedio * $diasRest), '2', ',', '.');
 }
+$vFatTot = 0;
 if (count($aDados['aNF']) > 0) {
     foreach ($aDados['aNF'] as $dado) {
         $gzPath = base64_encode(gzencode($aList[$i]));
@@ -194,6 +196,7 @@ if (count($aDados['aNF']) > 0) {
             <td class=\"left\"><a href=\"#\" onClick=\"openXml('$gzPath');\">".$dado['natureza']."</a></td>
             </tr>\n";
         $htmlNotas .= $htmlLinhaNota;
+        //$vFatTot += (float) !empty($dado['valorFat']) ? $dado['valorFat'] : 0;
         $vFat = !empty($dado['valorFat']) ? $dado['valorFat'] : 0;
         //$vFat = str_replace(['R','$'], '', $dado['valorFat']);
         //$vFat = str_replace('.', '', $vFat);
@@ -319,7 +322,7 @@ $html = "<!DOCTYPE html>
         }
     </script>
         <div class=\"container\">
-            <div class=\"left\"><img src=\"images/logo.jpg\" alt=\"logo\" height=\"62\"></div>
+            <div class=\"left\"><img src=\"$logo\" alt=\"logo\" height=\"100\"></div>
             <div class=\"left\">
                 <h1 align=\"center\">$titulo</h1>
                 $htmlStatus
@@ -369,12 +372,12 @@ $html = "<!DOCTYPE html>
             <h2>$mensagem</h2>
             <table border=\"0\" cellspacing=\"1\" width=\"40%\">
                 <tr>
-                    <td class=\"right\">Total</td>
+                    <td class=\"right\">Total NFe</td>
                     <td class=\"right\">R$ $tot</td>
                 </tr>
                 <tr>
                     <td class=\"right\">Total Venda Faturado</td>
-                    <td class=\"right\">R$ $totFatProd</td>
+                    <td class=\"right\">R$ $totFat</td>
                 </tr>
                 <tr>
                     <td class=\"right\">Peso Liquido Venda Faturado</td>
@@ -420,14 +423,9 @@ $html = "<!DOCTYPE html>
                     <td class=\"right\"><i>Razão</i></td>
                     <td class=\"right\"><i>$strRazaoICMS %</i></td>
                 </tr>
-                <tr>
-                    <td class=\"right\"><i>ICMS Pagar</i></td>
-                    <td class=\"right\"><i>$strICMSpagar</i></td>
-                </tr>
             </table>
             </center>
         </div>
-        
     </body>
 </html>
 ";

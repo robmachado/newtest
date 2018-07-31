@@ -25,7 +25,7 @@ if ($xml == '') {
 }
 $dxml = base64_decode($xml);
 $xml = gzdecode($dxml);
-$logo = 'images/logo.jpg';
+$logo = !empty($_ENV['NFE_LOGO']) ? "images/".$_ENV['NFE_LOGO'] : "images/logo.jpg";
 if (strpos($xml, 'recebidas')) {
     $logo = '';
 }

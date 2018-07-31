@@ -150,7 +150,7 @@ class Dados
                 $vNFtext = 'R$ '.number_format($vNF, '2', ',', '.');
             }
             $nNF = (string) $nfe->infNFe->ide->nNF;
-            $natOp = (string) $nfe->infNFe->ide->natOp;
+            $natOp = (string) strtoupper($nfe->infNFe->ide->natOp);
             $serie = (string) $nfe->infNFe->ide->serie;
             $nProt = (string) !empty($std->protNFe->infProt->nProt) ? $std->protNFe->infProt->nProt : '';
             $cStat = !empty($std->protNFe->infProt->cStat)
@@ -184,8 +184,6 @@ class Dados
             $vICMS = (float) $nfe->infNFe->total->ICMSTot->vICMS;
             
             $valorFat = 0;
-            $natOp1 = strtoupper(substr($nfe->infNFe->ide->natOp, 0, 1));
-            
             if ($cStat == '100' || $cStat == '150') {
                 $cobr = !empty($nfe->infNFe->cobr)
                     ? $nfe->infNFe->cobr
@@ -218,15 +216,19 @@ class Dados
             if ($nfe->infNFe->ide->tpNF == 0) {
                 $valorFat = 0;
             }
-            $pesoL = !empty($nfe->infNFe->transp->vol->pesoL)
-               ? $nfe->infNFe->transp->vol->pesoL
-               : 0;
-            if ($natOp1 == 'V') {
+            $pesoL = 0;
+            if (substr($natOp, 0, 5) === 'VENDA' && $valorFat > 0) {
                 $totFatProd += $valorFat;
+                $pesoL = !empty($nfe->infNFe->transp->vol->pesoL)
+                    ? $nfe->infNFe->transp->vol->pesoL
+                    : 0;
                 $totPesoProd += $pesoL;
-            } elseif ($natOp1 == 'R' && $valorFat > 0) {
+            } elseif (substr($natOp,0,5) === 'BENEF' && $valorFat > 0) {
                 $totFatServ += $valorFat;
-                $totPesoServ += $pesoL;
+                $pesoL = !empty($nfe->infNFe->transp->vol->pesoL)
+                    ? $nfe->infNFe->transp->vol->pesoL
+                    : 0;
+                $totPesoServ += $pesoL;    
             }
             $totIcms += $vICMS;
             $totFat += $valorFat;
@@ -250,7 +252,7 @@ class Dados
         }            
         return array(
             'tot' => $tot,
-            'totFat' => $totFatProd,
+            'totFat' => $totFat,
             'totFatProd' => $totFatProd,
             'totFatServ' => $totFatServ,
             'totPesoProd' => $totPesoProd,
